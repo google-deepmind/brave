@@ -12,12 +12,11 @@ those given in the paper. In particular, this implementation does not provide
 the option to train with optical flow.
 
 We provide a selection of pretrained checkpoints in the table below, which can
-directly be evaluated against HMDB 51 with the evaluation tools this package. Of
-the checkpoints, four were trained with the internal version of the BraVe model.
+directly be evaluated against HMDB 51 with the evaluation tools this package.
 These are exactly the checkpoints that were used to provide the numbers in the
-accompanying paper. The final checkpoint was trained with the code found in this
-package, to demonstrate that the results are comparable between the two slightly
-different implementations.
+accompanying paper, and were not trained with the exact trainer given in this
+package. For details on training a model with this package, please see the end
+of this readme.
 
 In the table below, the different configurations are represented by using e.g.
 V/A for video (narrow view) to audio (broad view), or V/VF for a narrow view
@@ -29,12 +28,12 @@ below, the SVM regularization constant used is 0.0001. For HMDB 51, the average
 is given in brackets, followed by the top-1 percentages for each of the splits.
 
 <!-- mdformat off(allow long lines) -->
-Views         | Architecture  | HMDB51                             | UCF-101 | K600  | Trained with internal model | Checkpoint
+Views         | Architecture  | HMDB51                             | UCF-101 | K600  | Trained with this package   | Checkpoint
 ------------- |:-------------:|:----------------------------------:|:-------:|:-----:|:---------------------------:| -----------
-V/AF          | TSM (1X)      | (69.2%) 71.307%, 68.497%, 67.843%  | 92.9%   | 69.2% | ✓                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29557527_2_0.py)
-V/AF          | TSM (2X)      | (69.9%) 72.157%, 68.432%, 69.02%   | 93.2%   | 70.2% | ✓                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29509415_1_0.py)
-V/A           | TSM (1X)      | (69.4%) 70.131%, 68.889%, 69.085%  | 93.0%   | 70.6% | ✓                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29466668_1_0.py)
-V/VVV         | TSM (1X)      | (65.4%) 66.797%, 63.856%, 65.425%  | 92.6%   | 70.8% | ✓                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29332798_5_0.py)
+V/AF          | TSM (1X)      | (69.2%) 71.307%, 68.497%, 67.843%  | 92.9%   | 69.2% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29557527_2_0.py)
+V/AF          | TSM (2X)      | (69.9%) 72.157%, 68.432%, 69.02%   | 93.2%   | 70.2% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29509415_1_0.py)
+V/A           | TSM (1X)      | (69.4%) 70.131%, 68.889%, 69.085%  | 93.0%   | 70.6% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29466668_1_0.py)
+V/VVV         | TSM (1X)      | (65.4%) 66.797%, 63.856%, 65.425%  | 92.6%   | 70.8% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29332798_5_0.py)
 <!-- mdformat on -->
 
 ## Reproducing results from the paper
@@ -128,6 +127,17 @@ We recommend doing this from a clean virtual environment.
 
 If you use this code (or any derived code), data or these models in your work,
 please cite the relevant accompanying [paper](https://arxiv.org/abs/2103.16559).
+
+```
+@misc{recasens2021broaden,
+      title={Broaden Your Views for Self-Supervised Video Learning},
+      author={Adrià Recasens and Pauline Luc and Jean-Baptiste Alayrac and Luyu Wang and Florian Strub and Corentin Tallec and Mateusz Malinowski and Viorica Patraucean and Florent Altché and Michal Valko and Jean-Bastien Grill and Aäron van den Oord and Andrew Zisserman and Ross Hemsley},
+      year={2021},
+      eprint={2103.16559},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 ## Disclaimer
 

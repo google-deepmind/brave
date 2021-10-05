@@ -155,6 +155,10 @@ def _build_parameterized_fns(
   """
   output_dims = config.output_dims
 
+  def shared_project(feats, is_training):
+    net = modules.ProjectAndPredict(output_dims, name='shared_project')
+    return net(feats, is_training)
+
   def broad_video_embedding(view, is_training):
     net = modules.VideoEmbedding(
         width_multiplier=config.tsm_resnet_width_multiplier,
@@ -172,20 +176,16 @@ def _build_parameterized_fns(
     return net(view, is_training)
 
   def b_video_to_n_video(f_b_1, is_training):
-    net = modules.ProjectAndPredict(output_dims, name='b_video_to_n_video')
-    return net(f_b_1, is_training)
+    return shared_project(f_b_1, is_training)
 
   def n_video_to_b_video(f_n, is_training):
-    net = modules.ProjectAndPredict(output_dims, name='n_video_to_b_video')
-    return net(f_n, is_training)
+    return shared_project(f_n, is_training)
 
   def b_audio_to_n_video(f_b_2, is_training):
-    net = modules.ProjectAndPredict(output_dims, name='b_audio_to_n_video')
-    return net(f_b_2, is_training)
+    return shared_project(f_b_2, is_training)
 
   def n_video_to_b_audio(f_n, is_training):
-    net = modules.ProjectAndPredict(output_dims, name='n_video_to_b_audio')
-    return net(f_n, is_training)
+    return shared_project(f_n, is_training)
 
   def init():
     batch = get_empty_minibatch(config)
@@ -390,6 +390,7 @@ def _transform_views(batch: datasets.MiniBatch) -> datasets.MiniBatch:
     broad = augmentations.random_horizontal_flip_video(broad)
     broad = augmentations.random_color_augment_video(
         broad, prob_color_augment=0.8, prob_color_drop=0.2)
+    broad = augmentations.random_convolve_video(view=broad)
 
   result = copy.copy(batch)
   result.views = dict(broad=broad, narrow=narrow)
@@ -401,27 +402,30 @@ def _brave_random_view_sampler(
 ) -> Dict[str, media_sequences.EncodedSequence]:
   """Sample the data for BraVe."""
 
-  # Extend the sequence so that there are enough frames
-  # for the broad view.
-  min_frames_required = (config.num_frames_broad - 1) * config.step_broad + 1
-  sequence = media_sequences.extend_sequence(sequence, min_frames_required)
-
   num_audio_samples = _num_audio_samples(
       config.num_frames_broad * config.step_broad,
       config.input_video_sample_rate, config.input_audio_sample_rate)
 
-  broad, broad_indices = time_sampling.random_sample_sequence_using_video(
+  narrow, narrow_indices = time_sampling.random_sample_sequence_using_video(
+      num_video_frames=config.num_frames_narrow,
+      video_frame_step=config.step_narrow,
+      sequence=sequence)
+
+  # Extend the sequence so that there are enough frames
+  # for the broad view.
+  frames_required_broad = (config.num_frames_broad - 1) * config.step_broad + 1
+  min_frames_required = narrow_indices.start_index + frames_required_broad
+  sequence = media_sequences.extend_sequence(sequence, min_frames_required)
+
+  # Note: We align the narrow view to the start of the broad view.
+  # For some configurations, it is better to randomly sample the start of the
+  # narrow.
+  broad, _ = time_sampling.random_sample_sequence_using_video(
       num_video_frames=config.num_frames_broad,
       video_frame_step=config.step_broad,
       sequence=sequence,
+      sample_start_index=narrow_indices.start_index,
       override_num_audio_samples=num_audio_samples)
-
-  narrow, _ = time_sampling.random_sample_sequence_using_video(
-      num_video_frames=config.num_frames_narrow,
-      video_frame_step=config.step_narrow,
-      sequence=sequence,
-      sample_start_index=broad_indices.start_index,
-      sample_end_index=broad_indices.end_index)
 
   return {
       'broad': broad,

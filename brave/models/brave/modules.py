@@ -38,7 +38,7 @@ class ProjectAndPredict(hk.Module):
 
   def __call__(self, feats: chex.Array, is_training: bool) -> chex.Array:
     z = Projector(self._output_dims)(feats, is_training)
-    h = Predictor(self._output_dims)(z, is_training)
+    h = Predictor(self._output_dims, name='predictor')(z, is_training)
     return z, h
 
 
@@ -92,7 +92,7 @@ class Projector(hk.Module):
     self.output_dims = output_dims
 
   def __call__(self, x: chex.Array, is_training: bool) -> chex.Array:
-    x = hk.Linear(512)(x)
+    x = hk.Linear(4096)(x)
     x = _default_normalize_fn(x, is_training)
     x = jax.nn.relu(x)
     x = hk.Linear(self.output_dims)(x)
@@ -110,10 +110,6 @@ class Predictor(hk.Module):
 
   def __call__(self, x: chex.Array, is_training: bool) -> chex.Array:
     """Project a projected z to predict another projected z."""
-
-    x = hk.Linear(4096)(x)
-    x = _default_normalize_fn(x, is_training)
-    x = jax.nn.relu(x)
 
     x = hk.Linear(4096)(x)
     x = _default_normalize_fn(x, is_training)
