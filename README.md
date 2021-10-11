@@ -131,7 +131,7 @@ please cite the relevant accompanying [paper](https://arxiv.org/abs/2103.16559).
 ```
 @misc{recasens2021broaden,
       title={Broaden Your Views for Self-Supervised Video Learning},
-      author={Adrià Recasens and Pauline Luc and Jean-Baptiste Alayrac and Luyu Wang and Florian Strub and Corentin Tallec and Mateusz Malinowski and Viorica Patraucean and Florent Altché and Michal Valko and Jean-Bastien Grill and Aäron van den Oord and Andrew Zisserman and Ross Hemsley},
+      author={Adrià Recasens and Pauline Luc and Jean-Baptiste Alayrac and Luyu Wang and Ross Hemsley and Florian Strub and Corentin Tallec and Mateusz Malinowski and Viorica Patraucean and Florent Altché and Michal Valko and Jean-Bastien Grill and Aäron van den Oord and Andrew Zisserman},
       year={2021},
       eprint={2103.16559},
       archivePrefix={arXiv},
@@ -141,4 +141,4 @@ please cite the relevant accompanying [paper](https://arxiv.org/abs/2103.16559).
 
 ## Disclaimer
 
-This is not an officially supported Google product.
+This is not an official Google product.

@@ -29,6 +29,7 @@ import tensorflow as tf
 from brave.datasets import augmentations
 from brave.datasets import datasets
 from brave.datasets import media_sequences
+from brave.datasets import sampling
 from brave.datasets import spectrograms
 from brave.datasets import time_sampling
 from brave.datasets import video_sampling
@@ -406,26 +407,37 @@ def _brave_random_view_sampler(
       config.num_frames_broad * config.step_broad,
       config.input_video_sample_rate, config.input_audio_sample_rate)
 
-  narrow, narrow_indices = time_sampling.random_sample_sequence_using_video(
-      num_video_frames=config.num_frames_narrow,
-      video_frame_step=config.step_narrow,
-      sequence=sequence)
+  frames_required_narrow = (config.num_frames_narrow -
+                            1) * config.step_narrow + 1
+
+  narrow_indices = sampling.random_sample(
+      start_index=0,
+      end_index=tf.math.maximum(
+          tf.shape(sequence.jpeg_encoded_images)[0], frames_required_narrow),
+      sample_length=config.num_frames_narrow,
+      step=config.step_narrow)
 
   # Extend the sequence so that there are enough frames
   # for the broad view.
   frames_required_broad = (config.num_frames_broad - 1) * config.step_broad + 1
-  min_frames_required = narrow_indices.start_index + frames_required_broad
-  sequence = media_sequences.extend_sequence(sequence, min_frames_required)
 
   # Note: We align the narrow view to the start of the broad view.
   # For some configurations, it is better to randomly sample the start of the
-  # narrow.
-  broad, _ = time_sampling.random_sample_sequence_using_video(
-      num_video_frames=config.num_frames_broad,
-      video_frame_step=config.step_broad,
-      sequence=sequence,
-      sample_start_index=narrow_indices.start_index,
-      override_num_audio_samples=num_audio_samples)
+  # narrow (for example when the broad view is a video).
+  broad_indices = sampling.Indices(
+      start_index=narrow_indices.start_index,
+      end_index=narrow_indices.start_index + frames_required_broad,
+      step=config.step_broad)
+
+  # Technically an over-estimate, but ensures there are enough frames.
+  min_frames_required = narrow_indices.start_index + (
+      config.num_frames_broad * config.step_broad)
+  sequence = media_sequences.extend_sequence(sequence, min_frames_required)
+
+  narrow = time_sampling.get_subsequence_by_video_indices(
+      sequence, narrow_indices)
+  broad = time_sampling.get_subsequence_by_video_indices(
+      sequence, broad_indices, override_num_audio_samples=num_audio_samples)
 
   return {
       'broad': broad,
