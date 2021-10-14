@@ -45,7 +45,7 @@ To get started, we recommend using a clean virtualenv. You may then install the
 brave package directly from GitHub using,
 
 ```bash
-pip install https://github.com/deepmind/brave.git
+pip install git+https://github.com/deepmind/brave.git
 ```
 
 A pre-processed version of the HMDB 51 dataset can be downloaded using the
