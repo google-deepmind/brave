@@ -19,7 +19,7 @@ package. For details on training a model with this package, please see the end
 of this readme.
 
 In the table below, the different configurations are represented by using e.g.
-V/A for video (narrow view) to audio (broad view), or V/VF for a narrow view
+V/A for video (narrow view) to audio (broad view), or V/F for a narrow view
 containing video, and a broad view containing optical flow.
 
 The backbone in each case is TSMResnet, with a given width multiplier (please
@@ -141,4 +141,4 @@ please cite the relevant accompanying [paper](https://arxiv.org/abs/2103.16559).
 
 ## Disclaimer
 
-This is not an official Google product.
+This is not an official Google product
