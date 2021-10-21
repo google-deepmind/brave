@@ -30,8 +30,8 @@ is given in brackets, followed by the top-1 percentages for each of the splits.
 <!-- mdformat off(allow long lines) -->
 Views         | Architecture  | HMDB51                             | UCF-101 | K600  | Trained with this package   | Checkpoint
 ------------- |:-------------:|:----------------------------------:|:-------:|:-----:|:---------------------------:| -----------
-V/AF          | TSM (1X)      | (69.2%) 71.307%, 68.497%, 67.843%  | 92.9%   | 69.2% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29557527_2_0.npy)
-V/AF          | TSM (2X)      | (69.9%) 72.157%, 68.432%, 69.02%   | 93.2%   | 70.2% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29509415_1_0.npy)
+V/AF          | TSM (1X)      | (69.2%) 71.307%, 68.497%, 67.843%  | 92.9%   | 69.3% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29557527_2_0.npy)
+V/AF          | TSM (2X)      | (69.9%) 72.157%, 68.431%, 69.02%   | 93.2%   | 70.3% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29509415_1_0.npy)
 V/A           | TSM (1X)      | (69.4%) 70.131%, 68.889%, 69.085%  | 93.0%   | 70.6% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29466668_1_0.npy)
 V/VVV         | TSM (1X)      | (65.4%) 66.797%, 63.856%, 65.425%  | 92.6%   | 70.8% | ✗                           | [download](https://storage.googleapis.com/dm-jaxline/brave/29332798_5_0.npy)
 <!-- mdformat on -->
