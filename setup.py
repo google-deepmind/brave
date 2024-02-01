@@ -82,7 +82,7 @@ setuptools.setup(
         'requests~=2.26.0',
         'requests-oauthlib~=1.3.0',
         'rsa~=4.7.2',
-        'scikit-learn==0.24.2',
+        'scikit-learn==1.0.1',
         'scipy~=1.5.4',
         'six~=1.15.0',
         'sklearn==0.0',
