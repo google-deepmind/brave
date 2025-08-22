@@ -44,7 +44,7 @@ setuptools.setup(
         'dm-tree==0.1.6',
         'ffmpeg-python==0.2.0',
         'flatbuffers~=1.12',
-        'future==0.18.2',
+        'future==1.0.0',
         'gast==0.4.0',
         'google-auth~=1.34.0',
         'google-auth-oauthlib==0.4.5',
