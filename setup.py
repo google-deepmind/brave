@@ -74,7 +74,7 @@ setuptools.setup(
         'promise~=2.3',
         'protobuf~=3.17.3',
         'py~=1.10.0',
-        'pyasn1==0.4.8',
+        'pyasn1==0.6.4',
         'pyasn1-modules==0.2.8',
         'pyparsing~=2.4.7',
         'pytest~=6.2.4',
